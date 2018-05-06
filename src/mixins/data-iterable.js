@@ -31,7 +31,7 @@ export default {
         sortBy: null,
         totalItems: 0
       },
-      expanded: {},
+      expandedKeys: {},
       actionsClasses: 'v-data-iterator__actions',
       actionsRangeControlsClasses: 'v-data-iterator__actions__range-controls',
       actionsSelectClasses: 'v-data-iterator__actions__select',
@@ -151,6 +151,10 @@ export default {
     pagination: {
       type: Object,
       default: () => {}
+    },
+    expanded: {
+      type: Array,
+      default: () => ([])
     }
   },
 
@@ -216,7 +220,14 @@ export default {
       this.updatePagination({ page: 1, totalItems })
     },
     'computedPagination.sortBy': function () { this.updatePagination({ page: 1 }) },
-    'computedPagination.descending': function () { this.updatePagination({ page: 1 }) }
+    'computedPagination.descending': function () { this.updatePagination({ page: 1 }) },
+    expanded (items) {
+      this.expandedKeys = {}
+      const keys = items.map(item => item[this.itemKey])
+      for (let i = 0; i < keys.length; i++) {
+        this.$set(this.expandedKeys, keys[i], true)
+      }
+    }
   },
 
   methods: {
@@ -248,7 +259,7 @@ export default {
       return this.selected[item[this.itemKey]]
     },
     isExpanded (item) {
-      return this.expanded[item[this.itemKey]]
+      return this.expandedKeys[item[this.itemKey]]
     },
     filteredItemsImpl (...additionalFilterArgs) {
       if (this.totalItems) return this.items
@@ -317,18 +328,20 @@ export default {
       })
 
       Object.defineProperty(props, 'expanded', {
-        get: () => this.expanded[item[this.itemKey]],
+        get: () => this.expandedKeys[item[this.itemKey]],
         set: value => {
           if (itemKey == null) {
             consoleWarn(`"${keyProp}" attribute must be defined for item`, this)
           }
 
           if (!this.expand) {
-            for (const key in this.expanded) {
-              this.expanded.hasOwnProperty(key) && this.$set(this.expanded, key, false)
+            for (const key in this.expandedKeys) {
+              this.expandedKeys.hasOwnProperty(key) && this.$set(this.expandedKeys, key, false)
             }
           }
-          this.$set(this.expanded, itemKey, value)
+          this.$set(this.expandedKeys, itemKey, value)
+
+          this.$emit('update:expanded', this.items.filter(item => this.expandedKeys[item[this.itemKey]]))
         }
       })
 
