@@ -3111,7 +3111,8 @@ var _slicedToArray = function () { function sliceIterator(arr, i) { var _arr = [
 
   watch: {
     itemsLength: function itemsLength(totalItems) {
-      this.updatePagination({ page: 1, totalItems: totalItems });
+      // 필요없는 update pagination, 2번 데이터 호출하므로 해당 코드를 주석처리.
+      // this.updatePagination({ page: 1, totalItems: totalItems });
     }
   },
 
