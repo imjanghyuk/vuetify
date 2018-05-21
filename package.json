@@ -2,12 +2,12 @@
   "name": "vuetify",
   "version": "1.1.0-alpha.6",
   "author": {
-    "name": "John Leider",
-    "email": "john@vuetifyjs.com"
+    "name": "Welin Vuetify",
+    "email": "welin@healingpaper.com"
   },
   "license": "MIT",
   "homepage": "http://vuetifyjs.com",
-  "repository": "vuetifyjs/vuetify",
+  "repository": "welin/vuetify",
   "main": "dist/vuetify.js",
   "module": "dist/vuetify.js",
   "unpkg": "dist/vuetify.js",
