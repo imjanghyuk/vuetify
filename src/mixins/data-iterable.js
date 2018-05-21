@@ -213,7 +213,7 @@ export default {
 
   watch: {
     itemsLength (totalItems) {
-      this.updatePagination({ page: 1, totalItems })
+      // this.updatePagination({ page: 1, totalItems })
     }
   },
 
